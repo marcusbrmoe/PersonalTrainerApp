@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -47,9 +45,9 @@ function AddTraining(props) {
 
     return (
         <div>
-            <IconButton variant="outlined" color="primary" size= 'small' onClick={handleClickOpen}>
-                <AddCircleOutlineIcon />
-            </IconButton>
+            <Button variant="outlined" color="primary" size= 'small' onClick={handleClickOpen}>
+                Add Training
+            </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">New Training</DialogTitle>
                 <DialogContent>
