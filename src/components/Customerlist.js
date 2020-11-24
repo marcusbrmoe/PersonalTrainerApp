@@ -29,6 +29,8 @@ function Customerlist() {
 
     const [msg, setMsg] = useState('');
 
+    const [filter, setFilter] = useState('')
+
     const gridRef = useRef();
 
     useEffect(() => {
@@ -37,6 +39,10 @@ function Customerlist() {
 
     const handleClose = () => {
         setOpen(false);
+    }
+
+    const onQuickFilterText= (event) => {
+        setFilter(event.target.value);
     }
 
     const columns = [
@@ -60,7 +66,7 @@ function Customerlist() {
             headerName: '', 
             field: 'links.0.href',
             width: 250,
-            cellRendererFramework: params => <AddTraining addTraining={addTraining} params={params} /> 
+            cellRendererFramework: params => <AddTraining addTraining={addTraining} params={params} />
         },
         {headerName: 'First name', field: 'firstname', sortable: true, filter: true, floatingFilter: true},
         {headerName: 'Last name', field: 'lastname', sortable: true, filter: true, floatingFilter: true},
@@ -132,26 +138,35 @@ function Customerlist() {
             {/* This button is used to RESET the Database and will NOT be included in the final product! */}
             <Button color= 'secondary' onClick={() => resetDB()}>RESET THE DATABASE</Button>
             
-            <AddCustomer addCustomer={addCustomer}/>
+            <div id="filter">
+                <input type="text" 
+                    id="quickFilter" 
+                    onChange={onQuickFilterText}
+                    placeholder="Filter..." 
+                    />
+                <AddCustomer addCustomer={addCustomer}/>
+            </div>
+            
             <div className="ag-theme-material" style={{height: '410px', width:'95%', margin: 'auto'}}>
             <AgGridReact
-                    ref={gridRef}
-                    onGridReady={ params => {
-                        gridRef.current = params.api;
-                        params.api.sizeColumnsToFit();
-                    }}
-                    columnDefs={columns}
-                    suppressCellSelection={true}
-                    rowData={customers}
-                    pagination={true}
-                    paginationPageSize={5}
-                ></AgGridReact>
-                <Snackbar
-                    open={open}
-                    autoHideDuration={3000}
-                    onClose={handleClose}
-                    message={msg}
-                />
+                ref={gridRef}
+                onGridReady={ params => {
+                    gridRef.current = params.api;
+                    params.api.sizeColumnsToFit();
+                }}
+                quickFilterText={filter}
+                columnDefs={columns}
+                suppressCellSelection={true}
+                rowData={customers}
+                pagination={true}
+                paginationPageSize={5}
+            ></AgGridReact>
+            <Snackbar
+                open={open}
+                autoHideDuration={3000}
+                onClose={handleClose}
+                message={msg}
+            />
             </div>
         </div>
     );

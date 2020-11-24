@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+#filter {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 95%;
+  margin-top: 10;
+}
+
