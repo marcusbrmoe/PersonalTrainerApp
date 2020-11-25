@@ -17,6 +17,8 @@ function Traininglist() {
 
     const [msg, setMsg] = useState('');
 
+    const [filter, setFilter] = useState('');
+
     const gridRef = useRef();
 
     useEffect(() => {
@@ -27,11 +29,15 @@ function Traininglist() {
         setOpen(false);
     }
 
+    const onQuickFilterText= (event) => {
+        setFilter(event.target.value);
+    }
+
     const columns = [
         {
             headerName: 'Actions',
             field: 'id',
-            width: 160,
+            width: 140,
             cellRendererFramework: params =>    <IconButton
                                                     color= 'inherit'
                                                     onClick={() => deleteTraining(params.value)}>
@@ -39,24 +45,22 @@ function Traininglist() {
                                                 </IconButton>
                 
         },
-        {headerName: 'Activity', field: 'activity', sortable: true, filter: true, floatingFilter: true},
+        {headerName: 'Activity', field: 'activity', sortable: true, filter: true},
         {
             headerName: 'Date', 
             field: 'date', 
             sortable: true, 
             filter: true, 
-            floatingFilter: true,
             cellRenderer: (data) => {
                 return moment(data.value).format('DD.MM.YYYY HH:mm')
             }
         },
-        {headerName: 'Duration (min)', field: 'duration', sortable: true, filter: true, floatingFilter: true},
+        {headerName: 'Duration (min)', field: 'duration', sortable: true, filter: true},
         {
             headerName: 'Customer',  
             field: 'customer',
             sortable: true, 
             filter: true, 
-            floatingFilter: true,
             valueGetter(params) {
                 return params.data.customer.firstname + ' ' + params.data.customer.lastname;
             }
@@ -87,12 +91,20 @@ function Traininglist() {
     return (
         <div>
             <div className="ag-theme-material" style={{height: '410px', width:'95%', margin: 'auto'}}>
+                <div id="filter">
+                    <input type="text" 
+                        id="quickFilter" 
+                        onChange={onQuickFilterText}
+                        placeholder="Filter..." 
+                        />
+                </div>
                 <AgGridReact
                     ref={gridRef}
                     onGridReady={ params => {
                         gridRef.current = params.api;
                         params.api.sizeColumnsToFit();
                     }}
+                    quickFilterText={filter}
                     columnDefs={columns}
                     suppressCellSelection={true}
                     rowData={trainings}

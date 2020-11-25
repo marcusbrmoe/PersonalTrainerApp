@@ -8,28 +8,18 @@ import EditCustomer from './EditCustomer';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 
-import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 function Customerlist() {
-    
-    //This is used to RESET the Database. It will NOT be included to the final product! 
-    const resetDB = () => {
-        fetch('https://customerrest.herokuapp.com/reset', {
-            method: 'POST'
-        })
-        .then(_ => getCustomers())
-    }
-    
     const [customers, setCustomers] = useState([]);
 
     const [open, setOpen] = useState(false);
 
     const [msg, setMsg] = useState('');
 
-    const [filter, setFilter] = useState('')
+    const [filter, setFilter] = useState('');
 
     const gridRef = useRef();
 
@@ -49,7 +39,7 @@ function Customerlist() {
         {
             headerName: 'Actions',
             field: 'links.0.href',
-            width: 160,
+            width: 150,
             cellRendererFramework: params =>    <IconButton
                                                     color= 'inherit'
                                                     onClick={() => deleteCustomer(params.value)}>
@@ -59,7 +49,7 @@ function Customerlist() {
         {
             headerName: '', 
             field: 'links.0.href',
-            width: 160,
+            width: 140,
             cellRendererFramework: params => <EditCustomer editCustomer={editCustomer} params={params} /> 
         },
         {
@@ -68,13 +58,13 @@ function Customerlist() {
             width: 250,
             cellRendererFramework: params => <AddTraining addTraining={addTraining} params={params} />
         },
-        {headerName: 'First name', field: 'firstname', sortable: true, filter: true, floatingFilter: true},
-        {headerName: 'Last name', field: 'lastname', sortable: true, filter: true, floatingFilter: true},
-        {headerName: 'E-mail', field: 'email', sortable: true, filter: true, floatingFilter: true},
-        {headerName: 'Phone', field: 'phone', sortable: true, filter: true, floatingFilter: true},
-        {headerName: 'Address', field: 'streetaddress', sortable: true, filter: true, floatingFilter: true},
-        {headerName: 'Postcode', field: 'postcode', sortable: true, filter: true, floatingFilter: true},
-        {headerName: 'City', field: 'city', sortable: true, filter: true, floatingFilter: true}
+        {headerName: 'First name', field: 'firstname', sortable: true, width: 180},
+        {headerName: 'Last name', field: 'lastname', sortable: true},
+        {headerName: 'E-mail', field: 'email', sortable: true},
+        {headerName: 'Phone', field: 'phone', sortable: true},
+        {headerName: 'Address', field: 'streetaddress', sortable: true},
+        {headerName: 'Postcode', field: 'postcode', sortable: true, width: 170},
+        {headerName: 'City', field: 'city', sortable: true}
     ]
 
     const getCustomers = () => {
@@ -135,38 +125,34 @@ function Customerlist() {
 
     return (
         <div>
-            {/* This button is used to RESET the Database and will NOT be included in the final product! */}
-            <Button color= 'secondary' onClick={() => resetDB()}>RESET THE DATABASE</Button>
-            
-            <div id="filter">
-                <input type="text" 
-                    id="quickFilter" 
-                    onChange={onQuickFilterText}
-                    placeholder="Filter..." 
-                    />
-                <AddCustomer addCustomer={addCustomer}/>
-            </div>
-            
             <div className="ag-theme-material" style={{height: '410px', width:'95%', margin: 'auto'}}>
-            <AgGridReact
-                ref={gridRef}
-                onGridReady={ params => {
-                    gridRef.current = params.api;
-                    params.api.sizeColumnsToFit();
-                }}
-                quickFilterText={filter}
-                columnDefs={columns}
-                suppressCellSelection={true}
-                rowData={customers}
-                pagination={true}
-                paginationPageSize={5}
-            ></AgGridReact>
-            <Snackbar
-                open={open}
-                autoHideDuration={3000}
-                onClose={handleClose}
-                message={msg}
-            />
+                <div id="filter">
+                    <input type="text" 
+                        id="quickFilter" 
+                        onChange={onQuickFilterText}
+                        placeholder="Filter..." 
+                        />
+                    <AddCustomer addCustomer={addCustomer}/>
+                </div>
+                <AgGridReact
+                    ref={gridRef}
+                    onGridReady={ params => {
+                        gridRef.current = params.api;
+                        params.api.sizeColumnsToFit();
+                    }}
+                    quickFilterText={filter}
+                    columnDefs={columns}
+                    suppressCellSelection={true}
+                    rowData={customers}
+                    pagination={true}
+                    paginationPageSize={5}
+                ></AgGridReact>
+                <Snackbar
+                    open={open}
+                    autoHideDuration={3000}
+                    onClose={handleClose}
+                    message={msg}
+                />
             </div>
         </div>
     );
