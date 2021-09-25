@@ -18,12 +18,12 @@ function App() {
   return (
     <div>
       <div>
-            <AppBar position="static">
+            <AppBar position='static'>
                 <Tabs value={value} onChange={handleChange}>
-                    <Tab value="one" label="CUSTOMERS"/> 
-                    <Tab value="two" label="TRAININGS"/>
-                    <Tab value="three" label="CALENDAR"/>
-                    <Tab value="four" label="STATISTICS"/>
+                    <Tab value='one' label="CUSTOMERS"/> 
+                    <Tab value='two' label="TRAININGS"/>
+                    <Tab value='three' label="CALENDAR"/>
+                    <Tab value='four' label="STATISTICS"/>
                 </Tabs>
             </AppBar>
             {value === 'one' && <div><Customerlist /></div>}
